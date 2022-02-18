@@ -20,6 +20,17 @@ export class AppComponent {
   public assists: any[] = [];
   public creepScore: any[] = [];
   public goldEarned: any[] = [];
+  public timeSeries: any[] = [];
+  public gPlayer1: any[] = [];
+  public gPlayer2: any[] = [];
+  public gPlayer3: any[] = [];
+  public gPlayer4: any[] = [];
+  public gPlayer5: any[] = [];
+  public gPlayer6: any[] = [];
+  public gPlayer7: any[] = [];
+  public gPlayer8: any[] = [];
+  public gPlayer9: any[] = [];
+  public gPlayer10: any[] = [];
   @ViewChild('csvReader') csvReader: any;
   uploadListener($event: any): void {
     let text = [];
@@ -32,9 +43,13 @@ export class AppComponent {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         let headersRow = this.getHeaderArray(csvRecordsArray);
-        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
-        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
-        console.log(this.csvJSON(csvData))
+        if(csvRecordsArray.length>9){
+          this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+        } else {
+          this.records = this.getGoldData(csvRecordsArray, headersRow.length);
+        }
+        console.log(headersRow)
+        //console.log(this.csvJSON(csvData))
       };
       reader.onerror = function () {
         console.log('error is occured while reading file!');
@@ -44,6 +59,52 @@ export class AppComponent {
       this.fileReset();
     }
   }
+
+  getGoldData(csvRecordsArray: any, headerLength: any) {
+    let csvArr = [];
+    for (let i = 1; i < csvRecordsArray.length; i++) {
+      let curruntRecord = (<string>csvRecordsArray[i]).split(',');
+      if (curruntRecord.length == headerLength) {
+        let csvRecord: CSVRecord = new CSVRecord();
+        csvRecord.timeSeries = curruntRecord[0].trim();
+        this.timeSeries.push(csvRecord.timeSeries);
+
+        csvRecord.gPlayer1 = curruntRecord[1].trim();
+        this.gPlayer1.push(csvRecord.gPlayer1);
+
+        csvRecord.gPlayer2 = curruntRecord[2].trim();
+        this.gPlayer2.push(csvRecord.gPlayer2);
+        console.log(curruntRecord[2])
+        csvRecord.gPlayer3 = curruntRecord[3].trim();
+        this.gPlayer3.push(csvRecord.gPlayer3);
+
+        csvRecord.gPlayer4 = curruntRecord[4].trim();
+        this.gPlayer4.push(csvRecord.gPlayer4);
+
+        csvRecord.gPlayer5 = curruntRecord[5].trim();
+        this.gPlayer5.push(csvRecord.gPlayer5);
+
+        csvRecord.gPlayer6 = curruntRecord[6].trim();
+        this.gPlayer6.push(csvRecord.gPlayer6);
+
+        csvRecord.gPlayer7 = curruntRecord[7].trim();
+        this.gPlayer7.push(csvRecord.gPlayer7);
+
+        csvRecord.gPlayer8 = curruntRecord[8].trim();
+        this.gPlayer8.push(csvRecord.gPlayer8);
+
+        csvRecord.gPlayer9 = curruntRecord[9].trim();
+        this.gPlayer9.push(csvRecord.gPlayer9);
+        
+        csvRecord.gPlayer10 = curruntRecord[10].trim();
+        this.gPlayer10.push(csvRecord.gPlayer10);
+
+        csvArr.push(csvRecord);
+      }
+    }
+    return csvArr;
+  }
+
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
@@ -67,6 +128,8 @@ export class AppComponent {
         csvRecord.goldEarned = curruntRecord[9].trim();
         this.goldEarned.push(csvRecord.goldEarned);
         csvRecord.result = curruntRecord[10].trim();
+
+
         csvArr.push(csvRecord);
       }
     }
@@ -75,10 +138,8 @@ export class AppComponent {
 
   csvJSON(csvRecordsArray: any) {
     var lines=csvRecordsArray.split("\n");
-    var result = [];
-    console.log(typeof lines)
+    var result = [];  
     var headers=['id', 'team', 'playerId', 'opponent', 'position', 'champion', 'kills', 'deaths', 'assists', 'creepScore', 'goldEarned', 'result']
-    console.log(headers)
     for(var i=1;i<lines.length;i++){
 
       var obj:any = {};
@@ -92,7 +153,6 @@ export class AppComponent {
   
     }
     
-    //return result; //JavaScript object
     return JSON.stringify(result); //JSON
   }
   isValidCSVFile(file: any) {
@@ -126,12 +186,31 @@ export class AppComponent {
     ]
   }
   goldData: ChartData<'line'> = {
-    labels: this.playerId,
     datasets: [
-      {label: 'Gold Earned', data: this.goldEarned, tension: 0.5}
-    ]
+      {label: '9800002', data: this.gPlayer1},
+      {label: '9800003', data: this.gPlayer2},
+      {label: '9800004', data: this.gPlayer3},
+      {label: '9800005', data: this.gPlayer4},
+      {label: '9800006', data: this.gPlayer5},
+      {label: '9800007', data: this.gPlayer6},
+      {label: '9800008', data: this.gPlayer7},
+      {label: '9800009', data: this.gPlayer8},
+      {label: '9800010', data: this.gPlayer9},
+      {label: '9800011', data: this.gPlayer10},
+    ],
+    labels: this.timeSeries,
+    // datasets: [
+    //   {label: 'Gold Earned', data: this.goldEarned, tension: 0.5}
+    // ]
   }
+
+    
   chartOptions: ChartOptions = {
+    elements: {
+      line: {
+        tension: 0.5
+      }
+    },
     responsive: true,
     plugins: {
       title: {
