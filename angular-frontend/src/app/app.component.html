@@ -16,15 +16,42 @@
         Choose File 2
         <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"/>
       </div> 
+      <div class="table-responsive">
+        <table class="table" *ngIf="kills.length > 0">
+          <thead>
+            <tr>
+              <th scope="col">TEAM </th>
+              <th scope="col">PlayerID</th>
+              <th scope="col">Opponent</th>
+              <th scope="col">Position</th>
+              <th scope="col">Champion</th>
+              <th scope="col">Kills</th>
+              <th scope="col">Deaths</th>
+              <th scope="col">Assists</th>
+              <th scope="col">Creep Score</th>
+              <th scope="col">Gold Earned</th>
+              <th scope="col">Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of records;let i = index;">
+              <td> <span>{{record.team}}</span> </td>
+              <td> <span>{{record.playerId}}</span> </td>
+              <td> <span>{{record.opponent}}</span> </td>
+              <td> <span>{{record.position}}</span> </td>
+              <td> <span>{{record.champion}}</span> </td>
+              <td> <span>{{record.kills}}</span> </td>
+              <td> <span>{{record.deaths}}</span> </td>
+              <td> <span>{{record.assists}}</span> </td>
+              <td> <span>{{record.creepScore}}</span> </td>
+              <td> <span>{{record.goldEarned}}</span> </td>
+              <td> <span>{{record.result}}</span> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="col-sm-12 col-md-6">
-      
-    </div>
-  </div>
-   
-  
-  <div class="row">
-    <div class="col-sm-12">
       <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">KDA Score Chart</h4>
@@ -37,10 +64,6 @@
           </canvas>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
       <div class="card mt-2" *ngIf="gPlayer1.length > 0">
         <div class="card-body">
           <h4 class="card-title">Gold Earned Chart</h4>
@@ -53,8 +76,6 @@
           </canvas>
         </div>
       </div>
-    </div>
-    <div class="col-sm-12 col-md-6"> 
       <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">Creep Score Chart</h4>
@@ -67,39 +88,10 @@
       </div>
     </div>
   </div>
+   
+  
+  
 </div>
 
 
 
-<!-- <table class="minimalistBlack" *ngIf="records.length > 0">
-  <thead>
-    <tr>
-      <th>TEAM </th>
-      <th>PlayerID</th>
-      <th>Opponent</th>
-      <th>Position</th>
-      <th>Champion</th>
-      <th>Kills</th>
-      <th>Deaths</th>
-      <th>Assists</th>
-      <th>Creep Score</th>
-      <th>Gold Earned</th>
-      <th>Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let record of records;let i = index;">
-      <td> <span>{{record.team}}</span> </td>
-      <td> <span>{{record.playerId}}</span> </td>
-      <td> <span>{{record.opponent}}</span> </td>
-      <td> <span>{{record.position}}</span> </td>
-      <td> <span>{{record.champion}}</span> </td>
-      <td> <span>{{record.kills}}</span> </td>
-      <td> <span>{{record.deaths}}</span> </td>
-      <td> <span>{{record.assists}}</span> </td>
-      <td> <span>{{record.creepScore}}</span> </td>
-      <td> <span>{{record.goldEarned}}</span> </td>
-      <td> <span>{{record.result}}</span> </td>
-    </tr>
-  </tbody>
-</table> -->
