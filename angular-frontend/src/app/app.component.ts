@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { CSVRecord } from './CSVModel';
 import { ViewChild } from '@angular/core';
@@ -27,144 +27,7 @@ export class AppComponent {
   public battleData: IBattleData[] =[];
   public errorMessage: string = "";
   public jsonDataSample: string = "";
-  obj = [
-    {
-        "id": 1,
-        "team": "UOL",
-        "playerId": "9800271",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 50,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 522,
-        "goldEarned": 9721,
-        "result": "L"
-    },
-    {
-        "id": 2,
-        "team": "UOL",
-        "playerId": "9800273",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 5,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 200,
-        "goldEarned": 9721,
-        "result": "L"
-    },    {
-        "id": 3,
-        "team": "UOL",
-        "playerId": "9800274",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 50,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 522,
-        "goldEarned": 9721,
-        "result": "L"
-    },
-    {
-        "id": 4,
-        "team": "UOL",
-        "playerId": "9800275",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 5,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 200,
-        "goldEarned": 9721,
-        "result": "L"
-    },    {
-        "id": 5,
-        "team": "UOL",
-        "playerId": "9800276",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 50,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 522,
-        "goldEarned": 9721,
-        "result": "L"
-    },
-    {
-        "id": 6,
-        "team": "UOL",
-        "playerId": "9800277",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 5,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 200,
-        "goldEarned": 9721,
-        "result": "L"
-    },    {
-        "id": 7,
-        "team": "UOL",
-        "playerId": "9800278",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 50,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 522,
-        "goldEarned": 9721,
-        "result": "L"
-    },
-    {
-        "id": 8,
-        "team": "UOL",
-        "playerId": "9800279",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 5,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 200,
-        "goldEarned": 9721,
-        "result": "L"
-    },    {
-        "id": 9,
-        "team": "UOL",
-        "playerId": "9800280",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 50,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 522,
-        "goldEarned": 9721,
-        "result": "L"
-    },
-    {
-        "id": 10,
-        "team": "UOL",
-        "playerId": "9800281",
-        "opponent": "GS",
-        "position": "Jungle",
-        "champion": "Tigreal",
-        "kills": 5,
-        "deaths": 3,
-        "assists": 3,
-        "creepScore": 200,
-        "goldEarned": 9721,
-        "result": "L"
-    }
-]
+
 
   sub!: Subscription;
 
@@ -183,6 +46,7 @@ export class AppComponent {
   uploadListener($event: any): void {
     let text = [];
     let files = $event.srcElement.files;
+    let jsonBody = "";
     if (this.isValidCSVFile(files[0])) {
       let input = $event.target;
       let reader = new FileReader();
@@ -193,10 +57,18 @@ export class AppComponent {
         let headersRow = this.getHeaderArray(csvRecordsArray);
         this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
         this.jsonDataSample = this.csvJSON(csvData);
+        jsonBody = this.csvJSON(csvData);
         console.log(this.jsonDataSample);
-        console.log(this.obj);
         console.log(JSON.stringify(this.jsonDataSample));
-        console.log(JSON.stringify(this.obj));
+        this.sub = this.predictService.getPredictionJson(this.jsonDataSample).subscribe({
+          next: products => {
+              this.battleData = products;
+              console.log(this.battleData);
+          },
+          error: err => this.errorMessage = err
+      });
+      console.log(this.battleData);
+
         if(csvRecordsArray.length>9){
           this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
         } else {
@@ -212,6 +84,8 @@ export class AppComponent {
       alert("Please import valid .csv file.");
       this.fileReset();
     }
+    console.log(this.jsonDataSample);
+    console.log(jsonBody);
   //   this.sub = this.predictService.getProducts().subscribe({
   //     next: products => {
   //         this.battleData = products;
@@ -221,14 +95,13 @@ export class AppComponent {
 
   // });
 
-    this.sub = this.predictService.getPredictionJson(this.jsonDataSample).subscribe({
-      next: products => {
-          this.battleData = products;
-          console.log(this.battleData);
-      },
-      error: err => this.errorMessage = err
-  });
-  console.log(this.battleData);
+
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes)
+
   }
 
   getGoldData(csvRecordsArray: any, headerLength: any) {
@@ -326,6 +199,8 @@ export class AppComponent {
           obj[headers[j]] = currentline[j]
         }
       }
+      let last = Object.keys(obj)[Object.keys(obj).length-1];
+      last.replace("\r","");
       result.push(obj);
       console.log(obj)
     }

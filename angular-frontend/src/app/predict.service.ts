@@ -9,7 +9,7 @@ import { IBattleData } from "./battledata";
 })
 export class PredictService {
     private predictUrl = 'http://localhost:8080/api/v1/battle-data/'
-    private predictUrl1 = 'http://localhost:8080/api/v1/predict'
+    private predictUrl1 = 'http://localhost:8080/api/v1/predict/'
 
     constructor(private http: HttpClient){
 
@@ -31,7 +31,7 @@ export class PredictService {
     }
 
     getPredictionJson(battleDataJson: string): Observable<IBattleData[]>{
-      const headers = { 'content-type': 'application/json'}
+      const headers = { 'Content-Type': 'application/json'}
       const body=battleDataJson;
       console.log(body)
       return this.http.post<IBattleData[]>(this.predictUrl1, body, {'headers':headers});
