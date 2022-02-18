@@ -1,6 +1,7 @@
 package com.hackatoon.truesightbackend.controller;
 
 import com.hackatoon.truesightbackend.model.BattleData;
+import com.hackatoon.truesightbackend.service.BattleDataService;
 import com.hackatoon.truesightbackend.service.PredictionService;
 import com.hackatoon.truesightbackend.service.WatsonHttpApiService;
 import org.json.JSONException;
@@ -19,11 +20,16 @@ public class PredictionController {
     @Autowired
     PredictionService predictionService;
 
+    @Autowired
+    BattleDataService battleDataService;
+
     @PostMapping()
     public List<BattleData> getPrediction(@RequestBody List<BattleData> battleDataList) throws IOException, JSONException {
         List<BattleData> response = new ArrayList<>();
 
         response = predictionService.predict(battleDataList);
+
+        battleDataService.saveAll(response);
 
         return response;
     }
