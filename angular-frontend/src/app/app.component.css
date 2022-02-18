@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
 .upload-btn {
     position: relative;
     overflow: hidden;
@@ -12,4 +14,27 @@
 
 .kda-btn {
   margin-right: 1rem;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-container img {
+  width: 80px;
+}
+.logo-container h2 {
+  font-family: 'Lato', sans-serif;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.blue-font {
+  color: #0d6efd;
 }

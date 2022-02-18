@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(ngbConfig: NgbConfig, private predictService: PredictService) {
     ngbConfig.animation = false;
   }
-  title = 'angular-frontend';
+  title = 'TrueSight';
   public records: any[] = [];
   public playerId: any[] = [];
   public kills: any[] = [];
