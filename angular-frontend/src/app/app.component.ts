@@ -4,13 +4,17 @@ import { CSVRecord } from './CSVModel';
 import { ViewChild } from '@angular/core';
 import {NgbConfig} from '@ng-bootstrap/ng-bootstrap';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { Subscription } from "rxjs";
+import { PredictService  } from './predict.service';
+import { IBattleData } from './battledata';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(ngbConfig: NgbConfig) {
+  constructor(ngbConfig: NgbConfig, private predictService: PredictService) {
     ngbConfig.animation = false;
   }
   title = 'angular-frontend';
@@ -21,6 +25,150 @@ export class AppComponent {
   public assists: any[] = [];
   public creepScore: any[] = [];
   public goldEarned: any[] = [];
+  public battleData: IBattleData[] =[];
+  public errorMessage: string = "";
+  public jsonDataSample: string = "";
+  obj = [
+    {
+        "id": 1,
+        "team": "UOL",
+        "playerId": "9800271",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 50,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 522,
+        "goldEarned": 9721,
+        "result": "L"
+    },
+    {
+        "id": 2,
+        "team": "UOL",
+        "playerId": "9800273",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 5,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 200,
+        "goldEarned": 9721,
+        "result": "L"
+    },    {
+        "id": 3,
+        "team": "UOL",
+        "playerId": "9800274",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 50,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 522,
+        "goldEarned": 9721,
+        "result": "L"
+    },
+    {
+        "id": 4,
+        "team": "UOL",
+        "playerId": "9800275",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 5,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 200,
+        "goldEarned": 9721,
+        "result": "L"
+    },    {
+        "id": 5,
+        "team": "UOL",
+        "playerId": "9800276",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 50,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 522,
+        "goldEarned": 9721,
+        "result": "L"
+    },
+    {
+        "id": 6,
+        "team": "UOL",
+        "playerId": "9800277",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 5,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 200,
+        "goldEarned": 9721,
+        "result": "L"
+    },    {
+        "id": 7,
+        "team": "UOL",
+        "playerId": "9800278",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 50,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 522,
+        "goldEarned": 9721,
+        "result": "L"
+    },
+    {
+        "id": 8,
+        "team": "UOL",
+        "playerId": "9800279",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 5,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 200,
+        "goldEarned": 9721,
+        "result": "L"
+    },    {
+        "id": 9,
+        "team": "UOL",
+        "playerId": "9800280",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 50,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 522,
+        "goldEarned": 9721,
+        "result": "L"
+    },
+    {
+        "id": 10,
+        "team": "UOL",
+        "playerId": "9800281",
+        "opponent": "GS",
+        "position": "Jungle",
+        "champion": "Tigreal",
+        "kills": 5,
+        "deaths": 3,
+        "assists": 3,
+        "creepScore": 200,
+        "goldEarned": 9721,
+        "result": "L"
+    }
+]
+
+  sub!: Subscription;
+
   public timeSeries: any[] = [];
   public gPlayer1: any[] = [];
   public gPlayer2: any[] = [];
@@ -44,6 +192,12 @@ export class AppComponent {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         let headersRow = this.getHeaderArray(csvRecordsArray);
+        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+        this.jsonDataSample = this.csvJSON(csvData);
+        console.log(this.jsonDataSample);
+        console.log(this.obj);
+        console.log(JSON.stringify(this.jsonDataSample));
+        console.log(JSON.stringify(this.obj));
         if(csvRecordsArray.length>9){
           this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
         } else {
@@ -59,6 +213,23 @@ export class AppComponent {
       alert("Please import valid .csv file.");
       this.fileReset();
     }
+  //   this.sub = this.predictService.getProducts().subscribe({
+  //     next: products => {
+  //         this.battleData = products;
+  //         console.log(this.battleData);
+  //     },
+  //     error: err => this.errorMessage = err
+
+  // });
+
+    this.sub = this.predictService.getPredictionJson(this.jsonDataSample).subscribe({
+      next: products => {
+          this.battleData = products;
+          console.log(this.battleData);
+      },
+      error: err => this.errorMessage = err
+  });
+  console.log(this.battleData);
   }
 
   getGoldData(csvRecordsArray: any, headerLength: any) {
@@ -96,7 +267,7 @@ export class AppComponent {
 
         csvRecord.gPlayer9 = curruntRecord[9].trim();
         this.gPlayer9.push(csvRecord.gPlayer9);
-        
+
         csvRecord.gPlayer10 = curruntRecord[10].trim();
         this.gPlayer10.push(csvRecord.gPlayer10);
 
@@ -139,10 +310,9 @@ export class AppComponent {
 
   csvJSON(csvRecordsArray: any) {
     var lines=csvRecordsArray.split("\n");
-    var result = [];  
+    var result = [];
     var headers=['id', 'team', 'playerId', 'opponent', 'position', 'champion', 'kills', 'deaths', 'assists', 'creepScore', 'goldEarned', 'result']
     for(var i=1;i<lines.length;i++){
-
       var obj:any = {};
       var currentline=lines[i].split(",");
       currentline.unshift(i)
@@ -151,23 +321,17 @@ export class AppComponent {
           if(headers[j] == 'playerId') {
             obj[headers[j]] = currentline[j]
           } else {
-            
             obj[headers[j]] = parseInt(currentline[j]);
           }
         } else {
           obj[headers[j]] = currentline[j]
         }
-        
-        
       }
-  
       result.push(obj);
       console.log(obj)
     }
-    
     return JSON.stringify(result); //JSON
   }
-
   isNum(val:any){
     return !isNaN(val)
   }
@@ -220,7 +384,7 @@ export class AppComponent {
     // ]
   }
 
-    
+
   chartOptions: ChartOptions = {
     elements: {
       line: {
