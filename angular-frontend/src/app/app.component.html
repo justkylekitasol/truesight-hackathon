@@ -10,16 +10,20 @@
     Choose File
     <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"/>
   </div>
+  <div class="upload-btn btn btn-primary">
+    Choose File 2
+    <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"/>
+  </div>  
   
   <div class="row">
-    <div class="col-sm-12" *ngIf="records.length > 0">
-      <div class="card mt-2">
+    <div class="col-sm-12">
+      <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">KDA Score Chart</h4>
           <canvas
             baseChart
             [data]="kdaData"
-            [type]="'line'"
+            [type]="'bar'"
             [options]="chartOptions"
           >
           </canvas>
@@ -28,22 +32,22 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-12 col-md-6" *ngIf="records.length > 0">
-      <div class="card mt-2">
+    <div class="col-sm-12 col-md-6">
+      <div class="card mt-2" *ngIf="gPlayer1.length > 0">
         <div class="card-body">
           <h4 class="card-title">Gold Earned Chart</h4>
           <canvas
             baseChart
             [data]="goldData"
-            [type]="'bar'"
+            [type]="'line'"
             [options]="chartOptions"
           >
           </canvas>
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-6" *ngIf="records.length > 0"> 
-      <div class="card mt-2">
+    <div class="col-sm-12 col-md-6"> 
+      <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">Creep Score Chart</h4>
           <canvas baseChart
@@ -59,7 +63,7 @@
 
 
 
-<table class="minimalistBlack" *ngIf="records.length > 0">
+<!-- <table class="minimalistBlack" *ngIf="records.length > 0">
   <thead>
     <tr>
       <th>TEAM </th>
@@ -90,4 +94,4 @@
       <td> <span>{{record.result}}</span> </td>
     </tr>
   </tbody>
-</table>
+</table> -->
