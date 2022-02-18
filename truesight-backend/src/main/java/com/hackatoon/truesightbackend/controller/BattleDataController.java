@@ -15,16 +15,19 @@ public class BattleDataController {
     @Autowired
     private BattleDataService battleDataService;
 
+    @CrossOrigin
     @GetMapping
     public List<BattleData> list(){
         return battleDataService.list();
     }
 
+    @CrossOrigin
     @GetMapping("{id}")
     public BattleData get(@PathVariable("id") Long id){
         return battleDataService.getById(id);
     }
-
+    
+    @CrossOrigin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BattleData create(@RequestBody final BattleData session) {

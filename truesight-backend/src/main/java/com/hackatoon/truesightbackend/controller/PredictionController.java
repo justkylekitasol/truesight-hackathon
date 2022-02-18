@@ -22,7 +22,8 @@ public class PredictionController {
 
     @Autowired
     BattleDataService battleDataService;
-
+    
+    @CrossOrigin
     @PostMapping()
     public List<BattleData> getPrediction(@RequestBody List<BattleData> battleDataList) throws IOException, JSONException {
         List<BattleData> response = new ArrayList<>();

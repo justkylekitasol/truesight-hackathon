@@ -3,6 +3,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { CSVRecord } from './CSVModel';
 import { ViewChild } from '@angular/core';
 import {NgbConfig} from '@ng-bootstrap/ng-bootstrap';
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -49,7 +50,7 @@ export class AppComponent {
           this.records = this.getGoldData(csvRecordsArray, headersRow.length);
         }
         console.log(headersRow)
-        //console.log(this.csvJSON(csvData))
+        console.log(this.csvJSON(csvData))
       };
       reader.onerror = function () {
         console.log('error is occured while reading file!');
@@ -146,14 +147,29 @@ export class AppComponent {
       var currentline=lines[i].split(",");
       currentline.unshift(i)
       for(var j=0;j<headers.length;j++){
-        obj[headers[j]] = currentline[j];
+        if(this.isNum(currentline[j])) {
+          if(headers[j] == 'playerId') {
+            obj[headers[j]] = currentline[j]
+          } else {
+            
+            obj[headers[j]] = parseInt(currentline[j]);
+          }
+        } else {
+          obj[headers[j]] = currentline[j]
+        }
+        
+        
       }
   
       result.push(obj);
-  
+      console.log(obj)
     }
     
     return JSON.stringify(result); //JSON
+  }
+
+  isNum(val:any){
+    return !isNaN(val)
   }
   isValidCSVFile(file: any) {
     return file.name.endsWith(".csv");
