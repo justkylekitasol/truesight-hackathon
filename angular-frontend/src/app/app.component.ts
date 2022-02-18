@@ -56,11 +56,8 @@ export class AppComponent {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         let headersRow = this.getHeaderArray(csvRecordsArray);
-        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
         this.jsonDataSample = this.csvJSON(csvData);
         jsonBody = this.csvJSON(csvData);
-        console.log(this.jsonDataSample);
-        console.log(JSON.stringify(this.jsonDataSample));
         this.sub = this.predictService.getPredictionJson(this.jsonDataSample).subscribe({
           next: products => {
               this.battleData = products;
@@ -68,7 +65,7 @@ export class AppComponent {
           },
           error: err => this.errorMessage = err
       });
-      console.log(this.battleData);
+      // console.log(this.battleData);
 
         if(csvRecordsArray.length>9){
           this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
@@ -76,7 +73,6 @@ export class AppComponent {
           this.records = this.getGoldData(csvRecordsArray, headersRow.length);
         }
         console.log(headersRow)
-        console.log(this.csvJSON(csvData))
       };
       reader.onerror = function () {
         console.log('error is occured while reading file!');
@@ -203,7 +199,6 @@ export class AppComponent {
       let last = Object.keys(obj)[Object.keys(obj).length-1];
       last.replace("\r","");
       result.push(obj);
-      console.log(obj)
     }
     return JSON.stringify(result); //JSON
   }

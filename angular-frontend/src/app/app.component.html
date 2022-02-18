@@ -8,23 +8,57 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-sm-12 col-md-6">
-      <div class="upload-btn btn btn-primary">
-        Choose File
+      <div class="upload-btn btn btn-primary kda-btn">
+        Upload KDA Data
         <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"/>
       </div>
       <div class="upload-btn btn btn-primary">
-        Choose File 2
+        Upload Gold Earned Data
         <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"/>
       </div> 
-    </div>
-    <div class="col-sm-12 col-md-6">
+      <div class="card mt-2" *ngIf="gPlayer1.length > 0 && kills.length > 0">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">TEAM </th>
+                  <th scope="col">PlayerID</th>
+                  <th scope="col">Opponent</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Champion</th>
+                  <th scope="col">Kills</th>
+                  <th scope="col">Deaths</th>
+                  <th scope="col">Assists</th>
+                  <th scope="col">Creep Score</th>
+                  <th scope="col">Gold Earned</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Fraud</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let fraud of battleData">
+                  <td> <span>{{fraud.team}}</span> </td>
+                  <td> <span>{{fraud.playerId}}</span> </td>
+                  <td> <span>{{fraud.opponent}}</span> </td>
+                  <td> <span>{{fraud.position}}</span> </td>
+                  <td> <span>{{fraud.champion}}</span> </td>
+                  <td> <span>{{fraud.kills}}</span> </td>
+                  <td> <span>{{fraud.deaths}}</span> </td>
+                  <td> <span>{{fraud.assists}}</span> </td>
+                  <td> <span>{{fraud.creepScore}}</span> </td>
+                  <td> <span>{{fraud.goldEarned}}</span> </td>
+                  <td> <span>{{fraud.result}}</span> </td>
+                  <td> <span>{{fraud.fraud}}</span> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       
     </div>
-  </div>
-   
-  
-  <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 col-md-6">
       <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">KDA Score Chart</h4>
@@ -37,10 +71,6 @@
           </canvas>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
       <div class="card mt-2" *ngIf="gPlayer1.length > 0">
         <div class="card-body">
           <h4 class="card-title">Gold Earned Chart</h4>
@@ -53,8 +83,6 @@
           </canvas>
         </div>
       </div>
-    </div>
-    <div class="col-sm-12 col-md-6"> 
       <div class="card mt-2" *ngIf="kills.length > 0">
         <div class="card-body">
           <h4 class="card-title">Creep Score Chart</h4>
@@ -67,39 +95,9 @@
       </div>
     </div>
   </div>
+   
+  
 </div>
 
 
 
-<!-- <table class="minimalistBlack" *ngIf="records.length > 0">
-  <thead>
-    <tr>
-      <th>TEAM </th>
-      <th>PlayerID</th>
-      <th>Opponent</th>
-      <th>Position</th>
-      <th>Champion</th>
-      <th>Kills</th>
-      <th>Deaths</th>
-      <th>Assists</th>
-      <th>Creep Score</th>
-      <th>Gold Earned</th>
-      <th>Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let record of records;let i = index;">
-      <td> <span>{{record.team}}</span> </td>
-      <td> <span>{{record.playerId}}</span> </td>
-      <td> <span>{{record.opponent}}</span> </td>
-      <td> <span>{{record.position}}</span> </td>
-      <td> <span>{{record.champion}}</span> </td>
-      <td> <span>{{record.kills}}</span> </td>
-      <td> <span>{{record.deaths}}</span> </td>
-      <td> <span>{{record.assists}}</span> </td>
-      <td> <span>{{record.creepScore}}</span> </td>
-      <td> <span>{{record.goldEarned}}</span> </td>
-      <td> <span>{{record.result}}</span> </td>
-    </tr>
-  </tbody>
-</table> -->
